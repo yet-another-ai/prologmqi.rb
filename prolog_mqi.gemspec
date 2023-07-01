@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors = ['Delton Ding']
   spec.email = ['shenghao.ding@yetanother.ai']
 
-  spec.summary = 'Write a short summary, because RubyGems requires one.'
-  spec.description = 'Write a longer description or delete this line.'
+  spec.summary = 'Yet Another Prolog Interface for Ruby.'
+  spec.description = 'A PrologMQI implementation in Ruby.'
   spec.homepage = 'https://github.com/yet-another-ai/prologmqi.rb'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.0.0'
