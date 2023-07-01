@@ -7,7 +7,7 @@ class TestPrologMQI < Minitest::Test
     refute_nil ::PrologMQI::VERSION
   end
 
-  def test_it_does_something_useful
+  def test_friends
     prolog = PrologMQI::PrologMQI.new
     prolog.session do |session|
       session.query("consult('#{fixture_prolog('friends')}')")
@@ -21,4 +21,33 @@ class TestPrologMQI < Minitest::Test
       assert_equal([{ 'X' => 'alice', 'Y' => 'bob' }, { 'X' => 'bob', 'Y' => 'alice' }], session.query('friends(X, Y)'))
     end
   end
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  def test_character
+    prolog = PrologMQI::PrologMQI.new
+    prolog.session do |session|
+      session.query("consult('#{fixture_prolog('character')}')")
+      session.query('assertz(current_hour(7))')
+      session.query('assertz(character(woody))')
+      session.query('assertz(character_state(woody, idling))')
+      session.query('assertz(character_hungriness(woody, 10))')
+      session.query('assertz(character_tiredness(woody, 30))')
+      session.query('assertz(item(cake))')
+      session.query('assertz(item(cigarettes))')
+      session.query('assertz(food(cake))')
+      session.query('assertz(has(woody, cake))')
+      session.query('assertz(finds(woody, cigarettes))')
+      session.query('assertz(likes(woody, cigarettes))')
+
+      assert_equal([
+                     { 'C' => 'woody', 'A' => 'sleep', 'I' => nil },
+                     { 'C' => 'woody', 'A' => 'pick', 'I' => 'cigarettes' },
+                     { 'C' => 'woody', 'A' => 'eat', 'I' => 'cake' }
+                   ], session.query('make_decision(C, A, I)'))
+      assert_equal([{ 'X' => 30 }], session.query('character_tiredness(woody, X)'))
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 end

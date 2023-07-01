@@ -29,7 +29,12 @@ module PrologMQI
     end
 
     def args
-      @term['args']
+      @term['args'].map do |arg|
+        next nil if arg == 'nil'
+        next arg.to_i if arg.is_a?(String) && arg.to_i.to_s == arg
+
+        arg
+      end
     end
   end
 end

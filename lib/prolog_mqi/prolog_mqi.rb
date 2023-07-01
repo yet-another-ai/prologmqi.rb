@@ -23,7 +23,6 @@ module PrologMQI
 
     def start
       # Start prolog process
-
       @stdin, @stdout, @stderr, @process =
         Open3.popen3('swipl', '--quiet', '-g', 'mqi_start', '-t', 'halt', '--', '--write_connection_values=true',
                      '--create_unix_domain_socket=true')
