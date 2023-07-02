@@ -5,12 +5,11 @@ require 'test_helper'
 class BenchPrologMQI < Minitest::Benchmark
   def bench_firends_query
     prolog = PrologMQI::PrologMQI.new
-    assert_performance_linear 0.99 do |n|
-      prolog.session do |session|
-        session.query("consult('#{fixture_prolog('friends')}')")
-        session.query('assertz(likes(alice, bob))')
-        session.query('assertz(likes(bob, alice))')
-
+    prolog.session do |session|
+      session.query("consult('#{fixture_prolog('friends')}')")
+      session.query('assertz(likes(alice, bob))')
+      session.query('assertz(likes(bob, alice))')
+      assert_performance_linear 0.99 do |n|
         n.times do
           session.query('likes(alice, bob)')
           session.query('likes(bob, alice)')
