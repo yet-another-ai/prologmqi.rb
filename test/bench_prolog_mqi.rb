@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class BenchPrologMQI < Minitest::Benchmark
-  def bench_firends_query
+  def bench_friends_query
     prolog = PrologMQI::PrologMQI.new
     prolog.session do |session|
       session.query("consult('#{fixture_prolog('friends')}')")

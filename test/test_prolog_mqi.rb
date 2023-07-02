@@ -58,4 +58,27 @@ class TestPrologMQI < Minitest::Test
   end
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
+
+  def test_fish
+    prolog = PrologMQI::PrologMQI.new
+    prolog.session do |session|
+      session.query("consult('#{fixture_prolog('fish')}')")
+
+      assert_equal([{ 'X' => 'germany' }, { 'X' => 'germany' }], session.query('fish(X)'))
+      assert_equal(
+        [
+          { 'X' => [{ 'args' => %w[norway water hockey cat yellow], 'functor' => 'h' },
+                    { 'args' => %w[denmark tea baseball horse blue], 'functor' => 'h' },
+                    { 'args' => %w[britain milk polo bird red], 'functor' => 'h' },
+                    { 'args' => %w[sweden beer billiards dog white], 'functor' => 'h' },
+                    { 'args' => %w[germany coffee soccer fish green], 'functor' => 'h' }] },
+          { 'X' => [{ 'args' => %w[norway water hockey cat yellow], 'functor' => 'h' },
+                    { 'args' => %w[denmark tea baseball horse blue], 'functor' => 'h' },
+                    { 'args' => %w[britain milk polo bird red], 'functor' => 'h' },
+                    { 'args' => %w[germany coffee soccer fish green], 'functor' => 'h' },
+                    { 'args' => %w[sweden beer billiards dog white], 'functor' => 'h' }] }
+        ], session.query('houses(X)')
+      )
+    end
+  end
 end
