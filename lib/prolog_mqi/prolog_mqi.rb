@@ -6,7 +6,7 @@ module PrologMQI
       @timeout = timeout
 
       @process = nil
-      @unix_domain_socket = nil
+      @socket = nil
       @running = false
     end
 
@@ -22,6 +22,8 @@ module PrologMQI
     end
 
     def start
+      raise LaunchError, 'PrologMQI is already running' if running?
+
       # Start prolog process
       @stdin, @stdout, @stderr, @process =
         Open3.popen3('swipl', '--quiet', '-g', 'mqi_start', '-t', 'halt', '--', '--write_connection_values=true',
@@ -38,6 +40,7 @@ module PrologMQI
       end
 
       # Authenticate
+      @running = true
       write(password)
       read
     end
@@ -63,13 +66,13 @@ module PrologMQI
       @socket.write(message)
     end
 
-    def stop(kill: false)
+    def stop
       @socket.close
       @stdin.close
       @stdout.close
       @stderr.close
-      @process.kill if kill
-      @process.close
+      @process.kill
+      @running = false
     end
   end
 end

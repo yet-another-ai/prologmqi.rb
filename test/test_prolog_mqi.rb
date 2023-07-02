@@ -7,6 +7,14 @@ class TestPrologMQI < Minitest::Test
     refute_nil ::PrologMQI::VERSION
   end
 
+  def test_prolog_would_not_start_twice
+    prolog = PrologMQI::PrologMQI.new
+
+    prolog.session do
+      assert_raises(PrologMQI::LaunchError) { prolog.start }
+    end
+  end
+
   def test_friends
     prolog = PrologMQI::PrologMQI.new
     prolog.session do |session|
