@@ -15,7 +15,7 @@ module PrologMQI
     # rubocop:disable Metrics/CyclomaticComplexity
     def handle_error
       return unless @term.name == 'exception'
-      raise PrologError, @term unless result.key?('args') && @term.args.length >= 1
+      raise PrologError, @term unless @term.args && @term.args.length >= 1
 
       case @term.args[0]
       when 'no_more_results'
