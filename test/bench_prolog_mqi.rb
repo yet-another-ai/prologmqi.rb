@@ -45,7 +45,7 @@ class BenchPrologMQI < Minitest::Benchmark
 
     puts "bench_revert_facts_instead_of_restart\t#{time_no_restart.real}\t#{time_restart.real}"
 
-    assert time_no_restart.real < time_restart.real
+    assert_operator time_no_restart.real, :<, time_restart.real
   end
   # rubocop:enable Metrics/AbcSize
 end
