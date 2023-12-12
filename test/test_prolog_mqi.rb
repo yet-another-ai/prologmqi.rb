@@ -38,7 +38,7 @@ class TestPrologMQI < Minitest::Test
       session.query('assertz(likes(bob, alice))')
 
       assert session.query_async('likes(alice, X)')
-      assert_equal([{ 'X' => 'bob' }], session.query_async_result))
+      assert_equal([{ 'X' => 'bob' }], session.query_async_result)
     end
   end
 
