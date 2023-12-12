@@ -70,7 +70,7 @@ module PrologMQI
     end
 
     def halt_server
-      write('halt')
+      write('quit')
       read
     end
 
