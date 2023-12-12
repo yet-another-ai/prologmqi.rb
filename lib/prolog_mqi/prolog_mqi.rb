@@ -51,6 +51,19 @@ module PrologMQI
       read
     end
 
+    def query_async(value, find_all=true)
+      timeout_str = @timeout.nil? ? '_' : @timeout.to_s
+      find_all_str = find_all ? 'true' : 'false'
+      write("run_async(#{value}, #{find_all_str}, #{timeout_str})")
+      read
+    end
+
+    def query_async_result
+      timeout_str = @timeout.nil? ? '-1' : @timeout.to_s
+      write("async_result(#{timeout_str})")
+      read
+    end
+
     def read
       bytesize = @socket.gets.chomp(".\n").to_i
       result = @socket.read(bytesize)

@@ -30,6 +30,18 @@ class TestPrologMQI < Minitest::Test
     end
   end
 
+  def test_async_query
+    prolog = PrologMQI::PrologMQI.new
+    prolog.session do |session|
+      session.query("consult('#{fixture_prolog('friends')}')")
+      session.query('assertz(likes(alice, bob))')
+      session.query('assertz(likes(bob, alice))')
+
+      assert session.query_async('likes(alice, X)')
+      assert_equal([{ 'X' => 'bob' }], session.query_async_result))
+    end
+  end
+
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def test_character
