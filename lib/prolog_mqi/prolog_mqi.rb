@@ -60,6 +60,7 @@ module PrologMQI
 
     def cancel_query_async
       write('cancel_async')
+      read
     end
 
     def query_async_result
