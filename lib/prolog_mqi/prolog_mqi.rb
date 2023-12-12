@@ -54,8 +54,12 @@ module PrologMQI
     def query_async(value, find_all=true)
       timeout_str = @timeout.nil? ? '_' : @timeout.to_s
       find_all_str = find_all ? 'true' : 'false'
-      write("run_async(#{value}, #{find_all_str}, #{timeout_str})")
+      write("run_async(#{value}, #{timeout_str}, #{find_all_str})")
       read
+    end
+
+    def cancel_query_async
+      write('cancel_async')
     end
 
     def query_async_result
