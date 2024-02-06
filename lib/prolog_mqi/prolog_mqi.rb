@@ -8,6 +8,12 @@ module PrologMQI
       @process = nil
       @socket = nil
       @running = false
+
+      ObjectSpace.define_finalizer(self, self.class.finalize(@process))
+    end
+
+    def self.finalize(process)
+      proc { process&.kill }
     end
 
     def running?
@@ -99,6 +105,7 @@ module PrologMQI
       @stdout.close
       @stderr.close
       @process.kill
+      @process = nil
       @running = false
     end
   end
